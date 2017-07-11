@@ -1,98 +1,75 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		<title>Document</title>
-		<style>
-			* {
-				margin: 0;
-				padding: 0;
-				list-style: none;
-			}
-			body{background-color:black;}
-			#box {
-				width: 100%;
-				height: 1000px;
-			
-				perspective: 800px;
-				margin: 0 auto;
-				margin-top: 100px;
-			}
-			
-			#u1 {margin: 0 auto;
-				width: 300px;
-				height: 200px;
-				transform-style: preserve-3d;
-				position: relative;
-				transform: rotateX(-10deg);
-				animation: lpl 15s infinite ease;
-				margin-top: 300px;
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            background-color: black;
+            color: #ccc;
+            cursor: pointer;
+        }
+        
+        .stage {
+            width: 800px;
+            height: 400px;
+            border: 1px solid #000;
+            margin: 0 auto;
+            perspective: 900px;
+        }
+        
+        .stage .actor {
+            width: 800px;
+            height: 400px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: all 1s ease 0s;
+            transform: rotateX(5deg);
+            animation: lpl 12s infinite ease;
+			margin-top: 20px;
+        }
+        
+        .stage .actor ul {
+            list-style: none;
+      
 			}
 			@keyframes lpl{
-				0%{transform: rotatey(0deg); top: 100px;}				
-			
+				0%{transform: rotatey(60deg); top: 100px;}				
+				20%{transform: rotatey(120deg);top: 100px;}
+				40%{transform: rotatey(180deg);top: 100px;}
+				60%{transform: rotatey(240deg);top: 100px;}
+				80%{transform: rotatey(300deg);top: 100px;}
 				100%{transform: rotatey(360deg); top: 100px;}
-                
+			}
+        
+        .stage .actor ul li {
+            position: absolute;
+            left: 300px;
+            top: 100px;
+        }
+        
+        .stage .actor ul li img {
+            width: 150px;
+            height: 250px;
+            /*倒影的设置*/
+            -webkit-box-reflect: below 10px -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, .5) 100%);
+        }
+    </style>
+</head>
 
-			}
-			li img {
-				width: 150px;
-				height: 200px;
-			}
-			
-			li {
-				width: 200px;
-				height: 200px;
-				position: absolute;
-				top: 0;
-				left: 0;
-			}
-		    li:nth-child(1){
-
-				transform: rotateY(0deg) rotateX(8deg) translateZ(210px);
-			}
-			li:nth-child(2){
-				
-				transform: rotateY(45deg) rotateX(8deg) translateZ(210px);
-			}
-			li:nth-child(3){
-				
-				transform: rotateY(90deg) rotateX(8deg) translateZ(210px);
-			}
-			li:nth-child(4){
-				
-				transform: rotateY(135deg) rotateX(8deg) translateZ(210px);
-			}
-			li:nth-child(5){
-				
-				transform: rotateY(180deg) rotateX(8deg) translateZ(210px);
-			}
-			li:nth-child(6){
-				
-				transform: rotateY(225deg) rotateX(8deg) translateZ(210px);
-			}
-            	li:nth-child(7){
-				
-				transform: rotateY(270deg) rotateX(8deg) translateZ(210px);
-			}
-            	li:nth-child(8){
-				
-				transform: rotateY(320deg) rotateX(8deg) translateZ(210px);
-			}
-		
-			
-		</style>
-	</head>
-<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
-	<body>
-		<div id="box">
-			
-			<ul id="u1">
-				<li ><img src="img/IMG_1128.JPG" /></li>
+<body>
+    <div class="stage">
+        <div class="actor">
+            <ul>
+              	<li ><img src="img/IMG_1128.JPG" /></li>
 				<li ><img src="img/IMG_1127.JPG" /></li>
 				<li ><img src="img/IMG_1126.JPG" /></li>
 				<li ><img src="img/IMG_1125.JPG" /></li>
@@ -100,42 +77,63 @@
 				<li ><img src="img/IMG_1123.JPG" /></li>
 				<li ><img src="img/IMG_1122.JPG" /></li>
 				<li ><img src="img/IMG_1121.JPG" /></li>
+				<li ><img src="img/IMG_1120.JPG" /></li>
                 
-			</ul>
-		</div>
+            </ul>
+        </div>
+    </div>
 
-	</body>
- <script>
-        var box = $('#u1');
+</body>
+<script src="js/jquery.js"></script>
+<script src="js/js.js"></script>
+<script>
+    var $actor = $(".actor");
+    // 把所有的图片展开呈圆形
+    $(".actor ul li").each(function(i) {
+        $(this).css('transform', "rotateY(" + i * 45 + "deg) translateZ(220px) ");
+    })
 
-        var nowRotateX = 0;
-        var nowRotateY = 0;
+    // 滚轮
+    var degree = 0;
+    var lock = true;
 
-        $(document).mousedown(function(ev) {
-            startX = ev.clientX;
-            startY = ev.clientY;
+    $(".stage").mousewheel(function(ev, delta) {
 
+        // 函数节流
+        if (!lock) return;
 
+        degree -= delta * 40;
+        $actor.css('transform', 'rotateY(' + degree + 'deg)')
+            // console.log(delta)
+        lock = false;
 
-            $(document).mousemove(function(ev) {
-                var deltaX = ev.clientX - startX;
-                var deltaY = ev.clientY - startY;
+        setTimeout(function() {
+            lock = true;
+        }, 1000)
 
-                nowRotateX += -deltaY / 100;
-                nowRotateY += deltaX / 100;
+    })
 
-                box.css("transform", "rotateX(" + nowRotateX + "deg) rotateY(" + nowRotateY + "deg)");
-                return false;
-            })
+    // 拖拽
+    var startX;
+    var startY;
+    $(document).mousedown(function(ev) {
+        startX = ev.clientX;
+        startY = ev.clientY;
+        // console.log(startX, startY);
+        $(document).mousemove(function(ev) {
+            var deltaX = ev.clientX - startX;
+            var deltaY = ev.clientY - startY;
+            $actor.css('transition', 'none');
+            console.log(deltaX, deltaY);
+            $actor.css('transform', 'rotateX(' + -deltaY / 10 + 'deg) rotateY(' + deltaX / 10 + 'deg)')
+            return false;
         })
+    })
 
-
-        $(document).mouseup(function() {
-            $(document).off('mousemove');
-            box.css("transition", "all 5s ease 0s");
-        })
-        
-      
-    </script>
+    $(document).mouseup(function() {
+        $(document).off('mousemove');
+        $actor.css('transition', 'all 0.5s ease 0s');
+    })
+</script>
 
 </html>
