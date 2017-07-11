@@ -98,10 +98,10 @@
     //拖拽
     var startX;
     var startY;
-    $(document).mousedown(function(ev) {
+    $(document).touchmove(function(ev) {
         var startX = ev.clientX;
         var startY = ev.clientY;
-        $(document).mousemove(function(ev) {
+        $(document).touchmove(function(ev) {
             var deltaX = ev.clientX - startX;
             var deltaY = ev.clientY - startY;
             $actor.css("transition", "none");
