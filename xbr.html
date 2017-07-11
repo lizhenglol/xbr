@@ -47,8 +47,8 @@
     }
     
     .stage .actor ul li img {
-        width: 180px;
-        height: 250px;
+        width: 150px;
+        height: 200px;
         /*倒影设置*/
         -webkit-box-reflect: below 10px -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, .5) 100%);
     }
@@ -78,7 +78,7 @@
     //把所有图片展开呈圆形
     $(".actor ul li").each(function(i) {
             console.log(i);
-            $(this).css("transform", "rotateY(" + i * 40 + "deg) translateZ(400px)");
+            $(this).css("transform", "rotateY(" + i * 40 + "deg) translateZ(350px)");
         })
         //滚轮
     var degree = 0;
