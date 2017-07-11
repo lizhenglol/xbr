@@ -32,7 +32,7 @@
             position: relative;
             transform-style: preserve-3d;
             transition: all 1s ease 0s;
-            transform: rotateX(5deg);
+            transform: rotateX(15deg);
             animation: lpl 12s infinite ease;
 			margin-top: 20px;
         }
@@ -90,7 +90,7 @@
     var $actor = $(".actor");
     // 把所有的图片展开呈圆形
     $(".actor ul li").each(function(i) {
-        $(this).css('transform', "rotateY(" + i * 40 + "deg) translateZ(220px) ");
+        $(this).css('transform', "rotateY(" + i * 40 + "deg) translateZ(240px) ");
     })
 
     // 滚轮
